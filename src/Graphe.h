@@ -7,7 +7,7 @@
 
 using namespace std;
 
-struct Noeud{
+struct Noeud {
     int i, j, altitude;
 
     //0 = blanc, 1 = gris, 2 = noir
@@ -17,13 +17,13 @@ struct Noeud{
     bool librairie;
 };
 
-struct Dijkstra{
+struct Dijkstra {
     Noeud pred;
 
     float distance; //sqrt(1 + sqr(h(i,j) − h(i − 1,j))) -> distance entre h(i, j) et voisin Nord
 };
 
-class Graphe{
+class Graphe {
     public:
         vector<Noeud> grille;           //tableau des noeuds (sommet)      
         vector<Dijkstra> tabRoute;      //tableau des distance/pred
@@ -67,6 +67,12 @@ class Graphe{
         int sud(const int ind);
         int ouest(const int ind);
         int est(const int ind);
+        /*
+        int getNord(const int ind);
+        int getSud(const int ind);
+        int getOuest(const int ind);
+        int getEst(const int ind);
+        */
 
         /**
          * @brief Return true si les voisins N, S, O et E
