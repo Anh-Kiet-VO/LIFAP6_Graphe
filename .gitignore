@@ -5,7 +5,7 @@
 *.slo
 *.lo
 *.o
-*.obj
+obj/*.o
 
 # Precompiled Headers
 *.gch
@@ -30,3 +30,16 @@
 *.exe
 *.out
 *.app
+*.in
+
+# Visual Studio Code files
+.vscode/*
+.vs/*
+Visual_Studio/*
+
+# Binary files
+bin/*
+*.ini
+
+# Documentation files
+doc/html/*
