@@ -38,7 +38,7 @@ class Graphe {
         /**
          * @brief Va lire le fichier, et remplir la grille avec les valeurs
          */
-        void lecture(const std::string &fichier);
+        void lireFichier(const string &nom_fichier);
 
         void lectureLib(const std::string &fichier);
 

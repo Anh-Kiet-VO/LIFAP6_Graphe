@@ -2,12 +2,13 @@
 #include <fstream>
 #include <math.h>
 #include <limits>
+
 #include "graphe.h"
 
 using namespace std;
 
 Graphe::Graphe() {
-
+    
 }
 
 Graphe::Graphe(const int lignes, const int colonnes) {
@@ -36,6 +37,48 @@ Graphe::Graphe(const Graphe &g) {
         grille[keke].couleur = g.grille[keke].couleur;
         grille[keke].librairie = g.grille[keke].librairie;
     }
+}
+
+void Graphe::lireFichier(const string &nom_fichier) {
+    ifstream fichierLecture(nom_fichier);
+
+    //Si le fichier ne s'ouvre pas
+    if(!fichierLecture.is_open()) {
+        cout << "Erreur dans l'ouverture en lecture du fichier : "<< nom_fichier;
+        exit(EXIT_FAILURE);
+    }
+
+    int sommet;
+    Noeud n;
+
+    fichierLecture >> L;
+    fichierLecture >> C;
+    
+    //Redimmensionne la grille avec la taille trouvée dans le fichier
+    grille.resize(L*C);
+    tabRoute.resize(L*C);
+
+    //Lit le fichier et remplit la grille avec les valeurs
+    //et les coordonnées adéquates
+    for(int i = 0; i < L; i++){
+        for(int j = 0; j < C; j++){
+            fichierLecture >> sommet;
+
+            n.altitude = sommet;
+
+            n.i = i;
+            n.j = j;
+
+            n.librairie = 0;
+
+            if(n.altitude != -1) {
+                n.couleur = 0;
+            }
+
+            grille[indice(i, j)] = n;
+        }
+    }
+    fichierLecture.close();
 }
 
 //Formule pour passer de la grille 2D au tableau 1D
@@ -132,21 +175,33 @@ bool Graphe::existeSud(const int ind) {
 bool Graphe::existeOuest(const int ind) {
     int i = ligne(ind);
     int j = colonne(ind) - 1;
-    if(altitude(indice(i, j)) == -1)
-        return false;
 
-    if(j >= 0) return true;
-    else return false;
+    if(altitude(indice(i, j)) == -1) {
+        return false;
+    }
+        
+    if(j >= 0) {
+        return true;
+    }
+    else {
+        return false;
+    } 
 }
 
-bool Graphe::existeEst(const int ind){
+bool Graphe::existeEst(const int ind) {
     int i = ligne(ind);
     int j = colonne(ind) + 1;
-    if(altitude(indice(i, j)) == -1)
+    
+    if(altitude(indice(i, j)) == -1) {
         return false;
+    }
 
-    if(j < C) return true;
-    else return false;
+    if(j < C) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 std::array<int, 4> Graphe::voisins(const int ind) {
@@ -154,6 +209,7 @@ std::array<int, 4> Graphe::voisins(const int ind) {
 
     if(altitude(ind) != -1) {
 
+        // Si il y a un voisin au nord, on stock celui-ci
         if(existeNord(ind)) {
             tabVoisins[0] = nord(ind);
         }
@@ -161,6 +217,7 @@ std::array<int, 4> Graphe::voisins(const int ind) {
             tabVoisins[0] = -1;
         }
 
+        // Si il y a un voisin au sud, on stock celui-ci
         if(existeSud(ind)) {
             tabVoisins[1] = sud(ind);
         }
@@ -168,19 +225,22 @@ std::array<int, 4> Graphe::voisins(const int ind) {
             tabVoisins[1] = -1;
         }
 
+        // Si il y a un voisin à l'ouest, on stock celui-ci
         if(existeOuest(ind)) {
             tabVoisins[2] = ouest(ind);
         } 
         else {
             tabVoisins[2] = -1;
         } 
+
+        // Si il y a un voisin à l'est, on stock celui-ci
         if(existeEst(ind)) {
             tabVoisins[3] = est(ind);
         }
         else {
             tabVoisins[3] = -1;
         }
-    }
+    } // Sinon, il n'y a pas de voisin donc -1
     else {
         for(int i = 0; i < 4; i++) {
             tabVoisins[i] = -1;
@@ -190,14 +250,14 @@ std::array<int, 4> Graphe::voisins(const int ind) {
 }
 
 void Graphe::affichage() {
+    for(int i = 0; i < L; i++) {
+        for(int j = 0; j < C; j++) {
+            int alti = grille[indice(i,j)].altitude;
 
-    for(int i = 0 ; i < L ; i++) {
-        for(int j = 0 ; j < C ; j++) {
-            int alt = grille[indice(i,j)].altitude;
-            if(alt == -1){
-                cout<<"-";
+            if(alti == -1) {
+                cout<<"x";
             }
-            else{
+            else {
                 cout << alti;
             }
             cout<<"  ";

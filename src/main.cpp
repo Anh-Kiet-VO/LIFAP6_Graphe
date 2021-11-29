@@ -3,5 +3,11 @@
 
 using namespace std;
 
-int main() {
+int main(){
+    Graphe g;
+    g.lireFichier("Graphe.txt");
+    g.affichage();
+    g.existeEst(5);
+
+    return 0;
 }

@@ -4,14 +4,14 @@ CFLAGS = -Wall -ggdb
 all: bin/main
 
 
-bin/main: obj/main.o obj/Graphe.o
-	$(CC) $(CFLAGS) obj/main.o obj/Graphe.o -o bin/main
+bin/main: obj/main.o obj/graphe.o
+	$(CC) $(CFLAGS) obj/main.o obj/graphe.o -o bin/main
 
-obj/main.o: src/main.cpp src/Graphe.h
-	$(CC) $(CFLAGS) src/main.cpp -o obj/main.o
+obj/main.o: src/main.cpp src/graphe.h
+	$(CC) $(CFLAGS) -c src/main.cpp -o obj/main.o
 
-obj/Graphe.o: src/Graphe.h src/Graphe.cpp
-	$(CC) $(CFLAGS) -c src/Graphe.cpp -o obj/Graphe.o
+obj/graphe.o: src/graphe.cpp src/graphe.h
+	$(CC) $(CFLAGS) -c src/graphe.cpp -o obj/graphe.o
 
 clean:
 	rm obj/*.o
