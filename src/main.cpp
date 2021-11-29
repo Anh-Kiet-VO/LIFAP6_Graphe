@@ -4,10 +4,15 @@
 using namespace std;
 
 int main(){
+
     Graphe g;
+
+    //Lecture de notre fichier graphe et affichage de celle-ci
     g.lireFichier("Graphe.txt");
     g.affichage();
-    g.existeEst(5);
+
+    // On check si les voisins marchent
+    g.voisins(7);
 
     return 0;
 }
