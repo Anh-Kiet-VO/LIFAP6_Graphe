@@ -7,7 +7,9 @@
 
 using namespace std;
 
-struct Noeud {
+class Noeud {
+    friend class Graphe;
+    public:
     int i, j, altitude;
 
     //0 = blanc, 1 = gris, 2 = noir
@@ -16,24 +18,28 @@ struct Noeud {
     //false = pas une librairie
     bool librairie;
 };
-
+/*
 struct Dijkstra {
     Noeud pred;
 
     float distance; //sqrt(1 + sqr(h(i,j) − h(i − 1,j))) -> distance entre h(i, j) et voisin Nord
-};
+};*/
 
 class Graphe {
+    
     public:
         vector<Noeud> grille;           //tableau des noeuds (sommet)      
-        vector<Dijkstra> tabRoute;      //tableau des distance/pred
+        //vector<Dijkstra> tabRoute;      //tableau des distance/pred
         vector<int> tabLibrairie;       //tab des indices 1D des librairies
         vector<float> coutLibrairie;    //tab des cout pour aller aux librairies
         int L, C;
 
         Graphe();
+        Graphe(const char * fichier);
         Graphe(const int lignes, const int colonnes);
         Graphe(const Graphe &a);
+
+        bool grilleOK(const int indice);
 
         /**
          * @brief Va lire le fichier, et remplir la grille avec les valeurs

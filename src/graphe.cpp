@@ -8,7 +8,19 @@
 using namespace std;
 
 Graphe::Graphe() {
-    
+    L = 0;
+    C = 0;
+
+    grille.resize(L * C);
+
+    for(int cece = 0; cece < L * C; cece++) {
+        grille[cece].altitude = -1;
+    }
+}
+
+Graphe::Graphe(const char * fichier)
+{
+	lireFichier(fichier);
 }
 
 Graphe::Graphe(const int lignes, const int colonnes) {
@@ -16,7 +28,6 @@ Graphe::Graphe(const int lignes, const int colonnes) {
     C = colonnes;
 
     grille.resize(L * C);
-    tabRoute.resize(L * C);
 
     for(int cece = 0; cece < lignes * colonnes; cece++) {
         grille[cece].altitude = -1;
@@ -28,7 +39,6 @@ Graphe::Graphe(const Graphe &g) {
     C = g.C;
 
     grille.resize(g.L * g.C);
-    tabRoute.resize(g.L * g.C);
 
     for(int keke = 0; keke < L * C ; keke++) {
         grille[keke].i = g.grille[keke].i;
@@ -55,8 +65,7 @@ void Graphe::lireFichier(const string &nom_fichier) {
     fichierLecture >> C;
     
     //Redimmensionne la grille avec la taille trouvée dans le fichier
-    grille.resize(L*C);
-    tabRoute.resize(L*C);
+    grille.resize(L * C);
 
     //Lit le fichier et remplit la grille avec les valeurs
     //et les coordonnées adéquates
@@ -98,11 +107,16 @@ int Graphe::altitude(const int indice) {
     return grille[indice].altitude;
 }
 
+bool Graphe::grilleOK(const int indice) {
+    if(indice < L * C) {
+        return 1;
+    } else return 0;
+}
+
 int Graphe::couleur(const int indice) {
     return grille[indice].couleur;
 }
 
-/* ANCIENNE VERSION
 int Graphe::nord(const int ind) {
     int i = ligne(ind) - 1;
     int j = colonne(ind);
@@ -204,126 +218,11 @@ bool Graphe::existeEst(const int ind) {
         return false;
     }
 }
-*/
-
-int Graphe::nord(const int ind) {
-    int i = ligne(ind) - 1;
-    int j = colonne(ind);
-
-    if (i >= 0) {
-        return indice(i,j);
-    }
-    else {
-        return -1;
-    }
-}
-
-int Graphe::sud(const int ind) {
-    int i = ligne(ind) + 1;
-    int j = colonne(ind);
-
-    if (i >= 0) {
-        return indice(i,j);
-    }
-    else {
-        return -1;
-    }
-    
-}
-
-int Graphe::ouest(const int ind) {
-    int i = ligne(ind);
-    int j = colonne(ind) - 1;
-
-    if (j >= 0) {
-        return indice(i,j);
-    }
-    else {
-        return -1;
-    }
-}
-
-int Graphe::est(const int ind) {
-    int i = ligne(ind);
-    int j = colonne(ind) + 1;
-
-    if (j < C) {
-        return indice(i,j);
-    }
-    else {
-        return -1;
-    }
-}
-
-bool Graphe::existeNord(const int ind) {
-    int i = ligne(ind) - 1;
-    int j = colonne(ind);
-
-    if(altitude(indice(i, j)) == -1) {
-        return false;
-    }
-        
-    if(i >= 0) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
-bool Graphe::existeSud(const int ind) {
-    int i = ligne(ind) + 1;
-    int j = colonne(ind);
-    if(altitude(indice(i, j)) == -1) {
-        return false;
-    }
-        
-
-    if(i >= 0) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
-
-bool Graphe::existeOuest(const int ind) {
-    int i = ligne(ind);
-    int j = colonne(ind) - 1;
-
-    if(altitude(indice(i, j)) == -1) {
-        return false;
-    }
-        
-    if(j >= 0) {
-        return true;
-    }
-    else {
-        return false;
-    } 
-}
-
-bool Graphe::existeEst(const int ind) {
-    int i = ligne(ind);
-    int j = colonne(ind) + 1;
-    
-    if(altitude(indice(i, j)) == -1) {
-        return false;
-    }
-
-    if(j < C) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
 
 std::array<int, 4> Graphe::voisins(const int ind) {
     std::array<int, 4> tabVoisins;
 
-    if(altitude(ind) != -1) {
-
+    if(altitude(ind) != -1 && grilleOK(ind) == 1) {
         // Si il y a un voisin au nord, on stock celui-ci
         if(existeNord(ind)) {
             tabVoisins[0] = nord(ind);

@@ -5,14 +5,15 @@ using namespace std;
 
 int main(){
 
-    Graphe g;
+    //Graphe g;
 
     //Lecture de notre fichier graphe et affichage de celle-ci
-    g.lireFichier("Graphe.txt");
+    //g.lireFichier("Graphe.txt");
+    Graphe g("Graphe.txt");
     g.affichage();
 
     // On check si les voisins marchent
-    g.voisins(7);
+    g.voisins(25);
 
     return 0;
 }
