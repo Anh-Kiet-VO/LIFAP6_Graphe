@@ -2,7 +2,8 @@
 obj/*.o
 
 # Executables
-bin/*
+bin/main
+bin/main.exe
 
 # Visual Studio Code files
 .vscode/*
