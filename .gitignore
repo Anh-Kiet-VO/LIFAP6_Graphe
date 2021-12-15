@@ -1,0 +1,17 @@
+# Compiled Object files
+obj/*.o
+
+# Executables
+bin/*
+
+# Visual Studio Code files
+.vscode/*
+
+# Visual Studio files
+.vs/*
+Visual_Studio/*
+
+# Documentation files
+doc/html/*
+
+*.ini
